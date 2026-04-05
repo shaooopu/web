@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务器 | shaooopu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oppo+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Oppo Sans', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">shaooopu</a>
+            <ul class="nav-links">
+                <li><a href="what-we-have.html">我们有什么</a></li>
+                <li><a href="about.html">了解我</a></li>
+                <li><a href="pay.html">///手头有点紧///</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 内容区域 -->
+    <div class="container" style="padding-top: 100px; min-height: 80vh; display: flex; align-items: center; width: 100%; margin: 0; padding: 0;">
+        <div style="width: 50%; display: flex; justify-content: flex-start; align-items: center; padding: 20px;">
+            <img src="shw.png" alt="服务器" style="width: 90%; max-height: 80vh; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
+        </div>
+        <div style="width: 50%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 20px; color: #1d3557;">
+            <h1 style="font-size: 4rem; margin-bottom: 50px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">服务器</h1>
+            <p style="font-size: 2rem; margin-bottom: 30px; text-align: left; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">你轻轻的走了</p>
+            <p style="font-size: 2rem; margin-bottom: 30px; text-align: right; padding-right: 50px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">正如你轻轻的来</p>
+            <p style="font-size: 2.5rem; margin-bottom: 30px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">welcome 里没有竞技 只有你</p>
+            <p style="font-size: 2rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">join us :shaopu.xyz</p>
+        </div>
+    </div>
+
+    <script>
+        // 鼠标跟随飘动效果
+        document.addEventListener('mousemove', (e) => {
+            const textElements = document.querySelectorAll('p');
+            const image = document.querySelector('img');
+            
+            const mouseX = e.clientX / window.innerWidth - 0.5;
+            const mouseY = e.clientY / window.innerHeight - 0.5;
+            
+            // 文字飘动效果
+            textElements.forEach((element) => {
+                const offsetX = mouseX * 15;
+                const offsetY = mouseY * 15;
+                element.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+                element.style.transition = 'transform 0.3s ease-out';
+            });
+            
+            // 图片飘动效果
+            if (image) {
+                const offsetX = mouseX * 20;
+                const offsetY = mouseY * 20;
+                image.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+                image.style.transition = 'transform 0.3s ease-out';
+            }
+        });
+    </script>
+</body>
+</html>
