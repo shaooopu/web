@@ -28,32 +28,80 @@
         </div>
     </nav>
 
+    <!-- 过场动画 -->
+    <div class="transition-overlay" id="transition-overlay"></div>
+    
+    <!-- 网格容器 -->
+    <div class="grid-container" id="grid-container"></div>
+    
     <!-- 内容区域 -->
-    <div class="container" style="padding-top: 100px; min-height: 80vh; display: flex; align-items: center; justify-content: center; width: 100%;">
+    <div class="container" style="padding-top: 100px; min-height: 80vh; display: flex; align-items: center; justify-content: center; width: 100%; position: relative; z-index: 1;">
         <div style="text-align: center; width: 100%; max-width: 800px; padding: 20px;">
-            <h1 style="color: #1d3557; margin-bottom: 30px; font-size: 4rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">了解我</h1>
-            <p style="font-size: 2.5rem; color: #1d3557; margin-bottom: 50px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">--shaopu--</p>
-            <p style="font-size: 2rem; color: #1d3557; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">来自2008年的</p>
-            <p style="font-size: 2rem; color: #1d3557; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">高中生</p>
         </div>
     </div>
-
+    
     <script>
-        // 鼠标跟随飘动效果
-        document.addEventListener('mousemove', (e) => {
-            const textElements = document.querySelectorAll('p');
+        // 过场动画
+        function setupTransitionAnimation() {
+            const overlay = document.getElementById('transition-overlay');
             
-            const mouseX = e.clientX / window.innerWidth - 0.5;
-            const mouseY = e.clientY / window.innerHeight - 0.5;
-            
-            // 文字飘动效果
-            textElements.forEach((element) => {
-                const offsetX = mouseX * 15;
-                const offsetY = mouseY * 15;
-                element.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-                element.style.transition = 'transform 0.3s ease-out';
+            // 为所有链接添加过场动画
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // 只对站内链接添加动画
+                    if (link.href.startsWith(window.location.origin)) {
+                        e.preventDefault();
+                        const targetUrl = link.href;
+                        
+                        // 显示过场动画
+                        overlay.classList.add('active');
+                        
+                        // 延迟后跳转到目标页面
+                        setTimeout(() => {
+                            window.location.href = targetUrl;
+                        }, 1000);
+                    }
+                });
             });
-        });
+        }
+        
+        // 生成网格
+        function generateGrid() {
+            const gridContainer = document.getElementById('grid-container');
+            if (!gridContainer) return;
+            
+            // 清空现有网格
+            gridContainer.innerHTML = '';
+            
+            // 计算网格数量
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const gridSize = 50;
+            const columns = Math.ceil(width / gridSize);
+            const rows = Math.ceil(height / gridSize);
+            
+            // 生成网格项
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < columns; j++) {
+                    const gridItem = document.createElement('div');
+                    gridItem.classList.add('grid-item');
+                    gridContainer.appendChild(gridItem);
+                }
+            }
+        }
+        
+        // 初始化
+        function init() {
+            setupTransitionAnimation();
+            generateGrid();
+        }
+        
+        // 初始化
+        init();
+        
+        // 窗口大小改变时重新生成网格
+        window.addEventListener('resize', generateGrid);
     </script>
 
 </body>

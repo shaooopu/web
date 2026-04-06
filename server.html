@@ -9,9 +9,117 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oppo+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Minecraft风格字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Oppo Sans', sans-serif;
+        }
+        
+
+        
+        .server-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        .server-image {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .server-image img {
+            max-width: 85%;
+            max-height: 45vh;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .server-info {
+            flex: 1;
+            min-width: 280px;
+            padding: 35px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Minecraft风格文本 */
+        .minecraft-text {
+            font-family: 'Press Start 2P', cursive;
+            color: #ffffff;
+            text-shadow: 3px 3px 0px #000000;
+            line-height: 2;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .minecraft-text p {
+            margin-bottom: 20px;
+        }
+        
+        .minecraft-text p:last-child {
+            margin-bottom: 0;
+        }
+        
+
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .server-content {
+                flex-direction: column;
+                gap: 30px;
+                padding: 15px;
+            }
+            
+            .server-image,
+            .server-info {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .server-info {
+                padding: 20px;
+            }
+            
+            .minecraft-text {
+                font-size: 12px;
+                line-height: 1.8;
+            }
+            
+            .minecraft-text p {
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .server-content {
+                gap: 20px;
+                padding: 10px;
+            }
+            
+            .server-info {
+                padding: 15px;
+            }
+            
+            .minecraft-text {
+                font-size: 10px;
+                line-height: 1.6;
+            }
         }
     </style>
 </head>
@@ -28,36 +136,97 @@
         </div>
     </nav>
 
+    <!-- 过场动画 -->
+    <div class="transition-overlay" id="transition-overlay"></div>
+    
+    <!-- 网格容器 -->
+    <div class="grid-container" id="grid-container"></div>
+    
     <!-- 内容区域 -->
-    <div class="container" style="padding-top: 100px; min-height: 80vh; display: flex; align-items: center; width: 100%; margin: 0; padding: 0;">
-        <div style="width: 50%; display: flex; justify-content: flex-start; align-items: center; padding: 20px;">
-            <img src="shw.png" alt="服务器" style="width: 90%; max-height: 80vh; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
-        </div>
-        <div class="about-content" style="width: 50%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 20px; color: #1d3557;">
-            <h1 style="font-size: 4rem; margin-bottom: 50px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">服务器</h1>
-            <p style="font-size: 2rem; margin-bottom: 30px; text-align: left; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">你轻轻的走了</p>
-            <p style="font-size: 2rem; margin-bottom: 30px; text-align: right; padding-right: 50px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">正如你轻轻的来</p>
-            <p style="font-size: 2.5rem; margin-bottom: 30px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">welcome</p>
-            <p style="font-size: 2rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">join us :shaopu.xyz</p>
+    <div class="container" style="padding-top: 100px; min-height: 80vh; display: flex; align-items: center; justify-content: center; width: 100%; margin: 0; padding: 20px; position: relative; z-index: 1;">
+        <div class="server-content">
+            <div class="server-image">
+                <img src="shw.png" alt="服务器" style="max-width: 85%; max-height: 45vh; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
+            </div>
+            <div class="server-info">
+                <div class="minecraft-text">
+                    <p>-----我的世界服务器------</p>
+                    <p>        shaopu.xyz</p>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        // 过场动画
+        function setupTransitionAnimation() {
+            const overlay = document.getElementById('transition-overlay');
+            
+            // 为所有链接添加过场动画
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // 只对站内链接添加动画
+                    if (link.href.startsWith(window.location.origin)) {
+                        e.preventDefault();
+                        const targetUrl = link.href;
+                        
+                        // 显示过场动画
+                        overlay.classList.add('active');
+                        
+                        // 延迟后跳转到目标页面
+                        setTimeout(() => {
+                            window.location.href = targetUrl;
+                        }, 1000);
+                    }
+                });
+            });
+        }
+        
+        // 生成网格
+        function generateGrid() {
+            const gridContainer = document.getElementById('grid-container');
+            if (!gridContainer) return;
+            
+            // 清空现有网格
+            gridContainer.innerHTML = '';
+            
+            // 计算网格数量
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const gridSize = 50;
+            const columns = Math.ceil(width / gridSize);
+            const rows = Math.ceil(height / gridSize);
+            
+            // 生成网格项
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < columns; j++) {
+                    const gridItem = document.createElement('div');
+                    gridItem.classList.add('grid-item');
+                    gridContainer.appendChild(gridItem);
+                }
+            }
+        }
+        
+        // 初始化
+        function init() {
+            setupTransitionAnimation();
+            generateGrid();
+        }
+        
+        // 初始化
+        init();
+        
+        // 窗口大小改变时重新生成网格
+        window.addEventListener('resize', generateGrid);
+        
         // 鼠标跟随飘动效果
         document.addEventListener('mousemove', (e) => {
-            const textElements = document.querySelectorAll('p');
             const image = document.querySelector('img');
+            const textContainer = document.querySelector('.server-info');
             
             const mouseX = e.clientX / window.innerWidth - 0.5;
             const mouseY = e.clientY / window.innerHeight - 0.5;
-            
-            // 文字飘动效果
-            textElements.forEach((element) => {
-                const offsetX = mouseX * 15;
-                const offsetY = mouseY * 15;
-                element.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-                element.style.transition = 'transform 0.3s ease-out';
-            });
             
             // 图片飘动效果
             if (image) {
@@ -65,6 +234,14 @@
                 const offsetY = mouseY * 20;
                 image.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
                 image.style.transition = 'transform 0.3s ease-out';
+            }
+            
+            // 文本飘动效果
+            if (textContainer) {
+                const offsetX = mouseX * 20;
+                const offsetY = mouseY * 20;
+                textContainer.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+                textContainer.style.transition = 'transform 0.3s ease-out';
             }
         });
     </script>

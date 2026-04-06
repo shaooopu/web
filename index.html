@@ -28,45 +28,89 @@
         </div>
     </nav>
 
+    <!-- 过场动画 -->
+    <div class="transition-overlay" id="transition-overlay"></div>
+    
+    <!-- 网格容器 -->
+    <div class="grid-container" id="grid-container"></div>
+    
     <!-- 内容区域 -->
-    <div class="container" style="padding-top: 80px; min-height: 100vh; display: flex; align-items: center; width: 100%; margin: 0; padding: 0;">
-        <div id="text-container" style="text-align: center; width: 50%; position: relative; display: flex; flex-direction: column; justify-content: space-between; height: 80vh; padding: 0 10px;">
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(210, 30%, 40%); position: relative; z-index: 9; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(200, 35%, 45%); position: relative; z-index: 8; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(190, 40%, 50%); position: relative; z-index: 7; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(180, 45%, 55%); position: relative; z-index: 6; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(170, 50%, 60%); position: relative; z-index: 5; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(160, 55%, 65%); position: relative; z-index: 4; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(150, 60%, 70%); position: relative; z-index: 3; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(140, 65%, 75%); position: relative; z-index: 2; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(130, 70%, 80%); position: relative; z-index: 1; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(120, 75%, 85%); position: relative; z-index: 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(110, 80%, 90%); position: relative; z-index: -1; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(100, 85%, 95%); position: relative; z-index: -2; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-            <h1 style="margin-bottom: -15px; font-size: 3.5rem; color: hsl(90, 90%, 100%); position: relative; z-index: -3; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">我是shaooopu</h1>
-        </div>
-        <div style="width: 50%; display: flex; justify-content: flex-end; align-items: center; padding: 10px 20px 10px 0;">
-            <img src="mcpfp - shaooopu.png" alt="shaooopu" style="width: 90%; max-height: 90vh; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
+    <div class="container" style="padding-top: 80px; min-height: 100vh; display: flex; align-items: center; width: 100%; margin: 0; padding: 0; position: relative; z-index: 1;">
+        <div style="width: 100%; display: flex; justify-content: center; align-items: center; padding: 20px;">
+            <img src="mcpfp - shaooopu.png" alt="shaooopu" style="max-width: 80%; max-height: 80vh; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
         </div>
     </div>
 
 
     <script>
+        // 过场动画
+        function setupTransitionAnimation() {
+            const overlay = document.getElementById('transition-overlay');
+            
+            // 为所有链接添加过场动画
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // 只对站内链接添加动画
+                    if (link.href.startsWith(window.location.origin)) {
+                        e.preventDefault();
+                        const targetUrl = link.href;
+                        
+                        // 显示过场动画
+                        overlay.classList.add('active');
+                        
+                        // 延迟后跳转到目标页面
+                        setTimeout(() => {
+                            window.location.href = targetUrl;
+                        }, 1000);
+                    }
+                });
+            });
+        }
+        
+        // 生成网格
+        function generateGrid() {
+            const gridContainer = document.getElementById('grid-container');
+            if (!gridContainer) return;
+            
+            // 清空现有网格
+            gridContainer.innerHTML = '';
+            
+            // 计算网格数量
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const gridSize = 50;
+            const columns = Math.ceil(width / gridSize);
+            const rows = Math.ceil(height / gridSize);
+            
+            // 生成网格项
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < columns; j++) {
+                    const gridItem = document.createElement('div');
+                    gridItem.classList.add('grid-item');
+                    gridContainer.appendChild(gridItem);
+                }
+            }
+        }
+        
+        // 初始化
+        function init() {
+            setupTransitionAnimation();
+            generateGrid();
+        }
+        
+        // 初始化
+        init();
+        
+        // 窗口大小改变时重新生成网格
+        window.addEventListener('resize', generateGrid);
+        
         // 鼠标跟随飘动效果
         document.addEventListener('mousemove', (e) => {
-            const textElements = document.querySelectorAll('#text-container h1');
             const image = document.querySelector('img');
             
             const mouseX = e.clientX / window.innerWidth - 0.5;
             const mouseY = e.clientY / window.innerHeight - 0.5;
-            
-            // 文字飘动效果
-            textElements.forEach((element) => {
-                const offsetX = mouseX * 15;
-                const offsetY = mouseY * 15;
-                element.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-                element.style.transition = 'transform 0.3s ease-out';
-            });
             
             // 图片飘动效果
             if (image) {
