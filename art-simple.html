@@ -4,20 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>画 | shaooopu</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oppo+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #1d3557;
-            color: white;
-            font-family: 'Oppo Sans', sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #1d3557;
         }
-
+        
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+        }
+        
         .content {
             padding-top: 100px;
             min-height: 80vh;
@@ -30,20 +60,24 @@
             z-index: 1;
             padding: 100px 20px 40px;
         }
+        
         .art-header {
             text-align: center;
             margin-bottom: 40px;
         }
+        
         .art-header h1 {
             font-size: 32px;
             font-weight: bold;
             color: #ffffff;
             margin-bottom: 10px;
         }
+        
         .art-header p {
             color: #cccccc;
             font-size: 16px;
         }
+        
         .artwork-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -51,6 +85,7 @@
             width: 100%;
             max-width: 1200px;
         }
+        
         .artwork-card {
             background-color: rgba(0, 0, 0, 0.5);
             border-radius: 20px;
@@ -60,18 +95,20 @@
             cursor: pointer;
             position: relative;
             z-index: 10;
-            animation: fall linear infinite;
         }
+        
         .artwork-card:hover {
             transform: scale(1.05) translateY(-5px);
             box-shadow: 0 20px 40px rgba(76, 175, 80, 0.3);
         }
+        
         .image-container {
             width: 100%;
             height: 200px;
             overflow: hidden;
             position: relative;
         }
+        
         .image-container img {
             width: 100%;
             height: 100%;
@@ -79,12 +116,15 @@
             display: block;
             transition: transform 0.4s ease;
         }
+        
         .image-container:hover img {
             transform: scale(1.1);
         }
+        
         .artwork-info {
             padding: 20px;
         }
+        
         .artwork-info h3 {
             color: #ffffff;
             font-size: 18px;
@@ -92,6 +132,7 @@
             font-weight: bold;
             text-transform: capitalize;
         }
+        
         .artwork-info p {
             color: #cccccc;
             font-size: 14px;
@@ -105,19 +146,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.9);
             z-index: 10000;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            opacity: 0;
-            transition: all 0.5s ease;
-        }
-        
-        .image-modal.active {
-            display: flex;
-            opacity: 1;
-            background-color: rgba(0, 0, 0, 0.9);
         }
         
         .modal-content {
@@ -127,14 +160,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transform: scale(0.8);
-            opacity: 0;
-            transition: all 0.5s ease;
-        }
-        
-        .image-modal.active .modal-content {
-            transform: scale(1);
-            opacity: 1;
         }
         
         .close-button {
@@ -163,20 +188,6 @@
             font-size: 24px;
             text-align: center;
         }
-        
-        @keyframes fall {
-            0% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 <body>
@@ -191,9 +202,6 @@
             </ul>
         </div>
     </nav>
-
-    <!-- 过场动画 -->
-    <div class="transition-overlay" id="transition-overlay"></div>
     
     <!-- 内容区域 -->
     <div class="content">
@@ -228,31 +236,6 @@
     </div>
     
     <script>
-        // 过场动画
-        function setupTransitionAnimation() {
-            const overlay = document.getElementById('transition-overlay');
-            
-            // 为所有链接添加过场动画
-            const links = document.querySelectorAll('a');
-            links.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    // 只对站内链接添加动画
-                    if (link.href.startsWith(window.location.origin)) {
-                        e.preventDefault();
-                        const targetUrl = link.href;
-                        
-                        // 显示过场动画
-                        overlay.classList.add('active');
-                        
-                        // 延迟后跳转到目标页面
-                        setTimeout(() => {
-                            window.location.href = targetUrl;
-                        }, 1000);
-                    }
-                });
-            });
-        }
-        
         // 打开模态框
         function openModal(imageSrc, title) {
             const modal = document.getElementById('image-modal');
@@ -267,13 +250,7 @@
             modalImage.src = imageSrc;
             modalImage.alt = title;
             modalTitle.textContent = title;
-            
-            // 显示模态框并添加active类触发动画
             modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.classList.add('active');
-            }, 10);
-            
             document.body.style.overflow = 'hidden';
         }
         
@@ -284,90 +261,12 @@
                 console.error('模态框元素未找到');
                 return;
             }
-            
-            // 移除active类触发关闭动画
-            modal.classList.remove('active');
-            
-            // 动画结束后隐藏模态框
-            setTimeout(() => {
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
-            }, 500);
-        }
-        
-        // 加载画作
-        function loadArtworks() {
-            const artworkGrid = document.querySelector('.artwork-grid');
-            if (!artworkGrid) return;
-            
-            // 清空现有内容
-            artworkGrid.innerHTML = '';
-            
-            // 图片格式列表
-            const formats = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
-            
-            // 尝试加载图片
-            function tryLoadImage(num) {
-                let loaded = false;
-                
-                // 尝试所有格式
-                for (const format of formats) {
-                    const imageSrc = `artworks/${num}.${format}`;
-                    const img = new Image();
-                    
-                    img.onload = function() {
-                        if (!loaded) {
-                            loaded = true;
-                            // 图片加载成功，创建卡片
-                        const card = document.createElement('div');
-                        card.className = 'artwork-card';
-                        card.onclick = function() { openModal(imageSrc, `画作 ${num}`); };
-                        
-                        // 设置随机动画延迟和持续时间
-                        const delay = Math.random() * 5; // 0-5秒的随机延迟
-                        const duration = 10 + Math.random() * 5; // 10-15秒的随机持续时间
-                        card.style.animationDelay = `${delay}s`;
-                        card.style.animationDuration = `${duration}s`;
-                        
-                        card.innerHTML = `
-                            <div class="image-container">
-                                <img src="${imageSrc}" alt="画作 ${num}">
-                            </div>
-                            <div class="artwork-info">
-                                <h3>画作 ${num}</h3>
-                                <p>${num}.${format}</p>
-                            </div>
-                        `;
-                        
-                        artworkGrid.appendChild(card);
-                            
-                            // 尝试加载下一张
-                            tryLoadImage(num + 1);
-                        }
-                    };
-                    
-                    img.onerror = function() {
-                        // 所有格式都尝试失败后，停止加载
-                        if (format === formats[formats.length - 1] && !loaded) {
-                            // 可以在这里添加一个停止条件，比如当连续10个数字都没有图片时停止
-                            if (num > 100) return; // 防止无限循环
-                            tryLoadImage(num + 1);
-                        }
-                    };
-                    
-                    img.src = imageSrc;
-                }
-            }
-            
-            // 开始加载
-            tryLoadImage(1);
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
         }
         
         // 初始化
         function init() {
-            setupTransitionAnimation();
-            loadArtworks();
-            
             // 绑定ESC键关闭
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
@@ -387,5 +286,6 @@
         // 初始化
         init();
     </script>
+
 </body>
 </html>

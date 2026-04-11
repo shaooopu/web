@@ -120,6 +120,36 @@
                 font-size: 10px;
                 line-height: 1.6;
             }
+            
+            .server-updates {
+                margin-top: 30px;
+                padding: 10px;
+            }
+            
+            .update-header h2 {
+                font-size: 14px;
+            }
+            
+            .update-list {
+                padding: 15px;
+            }
+            
+            .update-list div {
+                margin-bottom: 15px;
+                padding-bottom: 15px;
+            }
+            
+            .update-list .date {
+                font-size: 10px;
+            }
+            
+            .update-list .title {
+                font-size: 12px;
+            }
+            
+            .update-list .content {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -153,6 +183,16 @@
                     <p>-----我的世界服务器------</p>
                     <p>        shaopu.xyz</p>
                 </div>
+            </div>
+        </div>
+        
+        <!-- 服务器更新区域 -->
+        <div class="server-updates" style="margin-top: 50px; width: 100%; max-width: 900px;">
+            <div class="update-header" style="text-align: center; margin-bottom: 30px;">
+                <h2 style="font-family: 'Press Start 2P', cursive; color: #ffffff; text-shadow: 3px 3px 0px #000000; font-size: 18px;">服务器更新记录</h2>
+            </div>
+            <div class="update-list" id="update-list" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
+                <!-- 更新记录将通过JavaScript动态添加 -->
             </div>
         </div>
     </div>
@@ -214,6 +254,87 @@
             generateGrid();
         }
         
+        // 服务器更新记录
+        function loadServerUpdates() {
+            // 模拟服务器更新数据
+            const updates = [
+                {
+                    date: '2026-04-11',
+                    title: '服务器更新',
+                    content: '优化服务器的摆放方向,室始洞然'
+                },
+                {
+                    date: '2026-04-10',
+                    title: '服务器更新',
+                    content: '核心改为forge 版本1.20.1 mod 加入了机械动力 和农夫乐事'
+                },
+                {
+                    date: '2026-04-10',
+                    title: '服务器更新',
+                    content: '服务器服主吃了好吃的'
+                }
+            ];
+            
+            const updateList = document.getElementById('update-list');
+            if (!updateList) return;
+            
+            // 清空现有内容
+            updateList.innerHTML = '';
+            
+            // 生成更新记录
+            updates.forEach(update => {
+                const updateItem = document.createElement('div');
+                updateItem.style.cssText = `
+                    margin-bottom: 20px;
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                `;
+                
+                const updateDate = document.createElement('div');
+                updateDate.className = 'date';
+                updateDate.style.cssText = `
+                    font-family: 'Press Start 2P', cursive;
+                    color: #4CAF50;
+                    font-size: 12px;
+                    margin-bottom: 10px;
+                `;
+                updateDate.textContent = update.date;
+                
+                const updateTitle = document.createElement('div');
+                updateTitle.className = 'title';
+                updateTitle.style.cssText = `
+                    font-family: 'Press Start 2P', cursive;
+                    color: #ffffff;
+                    font-size: 14px;
+                    margin-bottom: 10px;
+                    text-shadow: 2px 2px 0px #000000;
+                `;
+                updateTitle.textContent = update.title;
+                
+                const updateContent = document.createElement('div');
+                updateContent.className = 'content';
+                updateContent.style.cssText = `
+                    font-family: 'Oppo Sans', sans-serif;
+                    color: #cccccc;
+                    font-size: 14px;
+                    line-height: 1.5;
+                `;
+                updateContent.textContent = update.content;
+                
+                updateItem.appendChild(updateDate);
+                updateItem.appendChild(updateTitle);
+                updateItem.appendChild(updateContent);
+                updateList.appendChild(updateItem);
+            });
+        }
+        
+        // 初始化
+        function init() {
+            setupTransitionAnimation();
+            generateGrid();
+            loadServerUpdates();
+        }
+        
         // 初始化
         init();
         
@@ -224,6 +345,8 @@
         document.addEventListener('mousemove', (e) => {
             const image = document.querySelector('img');
             const textContainer = document.querySelector('.server-info');
+            const updateList = document.querySelector('.update-list');
+            const updateHeader = document.querySelector('.update-header');
             
             const mouseX = e.clientX / window.innerWidth - 0.5;
             const mouseY = e.clientY / window.innerHeight - 0.5;
@@ -242,6 +365,22 @@
                 const offsetY = mouseY * 20;
                 textContainer.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
                 textContainer.style.transition = 'transform 0.3s ease-out';
+            }
+            
+            // 更新区域飘动效果
+            if (updateList) {
+                const offsetX = mouseX * 20;
+                const offsetY = mouseY * 20;
+                updateList.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+                updateList.style.transition = 'transform 0.3s ease-out';
+            }
+            
+            // 更新标题飘动效果
+            if (updateHeader) {
+                const offsetX = mouseX * 20;
+                const offsetY = mouseY * 20;
+                updateHeader.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+                updateHeader.style.transition = 'transform 0.3s ease-out';
             }
         });
     </script>
