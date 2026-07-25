@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shaopu</title>
+    <style>
+        @font-face {
+            font-family: 'OPPO Sans';
+            src: local('OPPO Sans'), local('OPPOSans');
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0a0a0a;
+            overflow: hidden;
+            font-family: 'OPPO Sans', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+            perspective: 1000px;
+        }
+
+        .text {
+            font-size: clamp(5rem, 20vw, 15rem);
+            font-weight: 900;
+            color: #338bff;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            user-select: none;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            text-shadow:
+                1px 1px 0 #2a7de6,
+                2px 2px 0 #2570d0,
+                3px 3px 0 #2063ba,
+                4px 4px 0 #1b56a4,
+                5px 5px 0 #16498e,
+                6px 6px 0 #113c78,
+                7px 7px 0 #0c2f62,
+                8px 8px 0 #07224c,
+                9px 9px 0 #021536,
+                10px 10px 30px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="text">shaopu</div>
+
+    <script>
+        const text = document.querySelector('.text');
+
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            const rotateX = (0.5 - y) * 40;
+            const rotateY = (x - 0.5) * 40;
+
+            text.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            text.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
+    </script>
+</body>
+</html>
