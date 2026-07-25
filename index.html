@@ -50,27 +50,112 @@
                 9px 9px 0 #021536,
                 10px 10px 30px rgba(0, 0, 0, 0.8);
         }
+
+        .hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: rgba(51, 139, 255, 0.15);
+            border: 1px solid rgba(51, 139, 255, 0.3);
+            border-radius: 30px;
+            color: #338bff;
+            font-size: 0.85rem;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .hint.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .hint.show {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="text">shaopu</div>
+    <div class="hint" id="hint">点击启用陀螺仪</div>
 
     <script>
         const text = document.querySelector('.text');
+        const hint = document.getElementById('hint');
+        let isGyroActive = false;
 
+        function updateTransform(rotateX, rotateY) {
+            text.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        }
+
+        // 鼠标交互（桌面端）
         document.addEventListener('mousemove', (e) => {
+            if (isGyroActive) return;
+
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
 
             const rotateX = (0.5 - y) * 40;
             const rotateY = (x - 0.5) * 40;
 
-            text.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            updateTransform(rotateX, rotateY);
         });
 
         document.addEventListener('mouseleave', () => {
-            text.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            if (!isGyroActive) {
+                updateTransform(0, 0);
+            }
         });
+
+        // 陀螺仪交互（移动端）
+        function handleOrientation(event) {
+            const gamma = event.gamma || 0;
+            const beta = event.beta || 0;
+
+            const rotateY = Math.max(-30, Math.min(30, gamma));
+            const rotateX = Math.max(-30, Math.min(30, beta - 45)) * -1;
+
+            updateTransform(rotateX, rotateY);
+        }
+
+        function enableGyro() {
+            if (typeof DeviceOrientationEvent !== 'undefined' &&
+                typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(permissionState => {
+                        if (permissionState === 'granted') {
+                            window.addEventListener('deviceorientation', handleOrientation);
+                            isGyroActive = true;
+                            hint.classList.remove('show');
+                        } else {
+                            hint.textContent = '需要陀螺仪权限';
+                        }
+                    })
+                    .catch(() => {
+                        hint.textContent = '启用失败，请重试';
+                    });
+            } else {
+                window.addEventListener('deviceorientation', handleOrientation);
+                isGyroActive = true;
+                hint.classList.remove('show');
+            }
+        }
+
+        // 检测是否为移动设备
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+                        (window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+
+        if (isMobile) {
+            hint.classList.add('show');
+            hint.addEventListener('click', enableGyro);
+            hint.addEventListener('touchstart', enableGyro, { passive: true });
+        }
     </script>
 </body>
 </html>
